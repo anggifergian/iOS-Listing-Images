@@ -26,6 +26,8 @@ class ViewController: UITableViewController {
             }
         }
         
+        pictures = pictures.sorted()
+        
         print(pictures)
     }
     
@@ -37,6 +39,7 @@ class ViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Picture", for: indexPath)
         var content = cell.defaultContentConfiguration()
         content.text = pictures[indexPath.row]
+        content.textProperties.font = .systemFont(ofSize: 16.0)
         cell.contentConfiguration = content
         return cell
     }
@@ -45,8 +48,10 @@ class ViewController: UITableViewController {
         // [1] Try loading the "Detail" (Storyboard ID) view controller and typecasting to DetailViewController
         if let vc = storyboard?.instantiateViewController(withIdentifier: "Detail") as? DetailViewController {
             
-            // [2] If success set value of selected pictures to selectedImage property
+            // [2] If success set value of selected pictures
             vc.selectedImage = pictures[indexPath.row]
+            vc.currentIndex = indexPath.row + 1
+            vc.totalItems = pictures.count
             
             // [3] Push it into the navigation controller
             navigationController?.pushViewController(vc, animated: true)
