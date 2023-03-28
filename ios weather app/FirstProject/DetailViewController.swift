@@ -21,6 +21,7 @@ class DetailViewController: UIViewController {
         guard let totalItems = totalItems else { return }
         title = "Picture \(currentIndex) of \(totalItems)"
         
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(didTapSharedImage))
         navigationItem.largeTitleDisplayMode = .never
         
         if let imageToLoad = selectedImage {
@@ -38,4 +39,15 @@ class DetailViewController: UIViewController {
         navigationController?.hidesBarsOnTap = false
     }
 
+    @objc func didTapSharedImage() {
+        guard let image = imageView.image?.jpegData(compressionQuality: 0.8) else {
+            print("No image found")
+            return
+        }
+        
+        print("[Anggi]...\(image)")
+        let vc = UIActivityViewController(activityItems: [image], applicationActivities: [])
+        vc.popoverPresentationController?.sourceView = self.view
+        present(vc, animated: true)
+    }
 }
